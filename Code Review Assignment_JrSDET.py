@@ -4,7 +4,16 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import time
 
+# Better naming conventions
 class Testcase101:
+    #Firstly I believe we can create an wrapper method for find_element() which will be more efficient to use
+    #sometimes as there might be slower network connection  elements might not be found in time, leading to failures.
+    # We may need to include a wait before or after actions to address this.   
+    #so wrapper method  will be like wait_for_element(driver, "json_dict", "element", wait_attempts=40)
+    # Multiple locators can be stored in json_dict and fetched from there. The wait_for_element() method will have wait_attempts=20 by default and can be changed as per need.
+    # It will also include a try and except block for smooth execution.
+    # We can create multiple wrapper methods as needed:
+    # such as wait_for_element(), wait_for_and_click(), Click_if_present(), wait_while_present(), etc.
 
     def main(self):
         driver = webdriver.Firefox(executable_path="C:\\Users\\Johny\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe")
@@ -26,6 +35,7 @@ class Testcase101:
         statusColourEnter = driver.find_element(By.XPATH, "//input[@class='sp-input']")
         statusColourEnter.clear()
         statusColourEnter.send_keys("#47963f")
+        #Use the send_keys method to simulate pressing the "Escape" key.
         r = Robot()
         r.keyPress(KeyEvent.VK_ESCAPE)
         firstElement = driver.find_element(By.XPATH, "//a[@id='first-link']")
@@ -63,6 +73,10 @@ class Testcase101:
         time.sleep(9)
         driver.find_element(By.XPATH, "/html[1]/body[1]/div[3]/div[1]/header[1]/div[2]/nav[1]/div[7]/div[1]/div[1]").click()
         driver.find_element(By.LINK_TEXT, "Logout").click()
+
+        # Secondly we can Break down this large methods into small more manageable methods.
+        # such as setup() login() add_status() assign_priority() delete_priority() logout() and ofcourse teardown()
+        # then we can run the flow more efficiently with setup() and teardown() to initiate and close the webdriver.
 
 class PagesforAutomationAssignment:
 
@@ -110,7 +124,8 @@ class TablePage(BasePage):
 
     def retrieveRowTexts(self):
         rows = self.driver.find_elements(self.rowLocator)
-
+        
+        #we can use enumerate here
         for i in range(len(rows)):
             row = rows[i]
             rowText = row.text
